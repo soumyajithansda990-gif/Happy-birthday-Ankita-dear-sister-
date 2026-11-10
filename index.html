@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Surprise 🎂</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Trebuchet MS', sans-serif;
+    background: linear-gradient(135deg, #16002e, #3b0875, #071b50);
+    color: white;
+    text-align: center;
+}
+
+.container {
+    padding: 25px;
+    z-index: 2;
+}
+
+.date {
+    color: #ffd86b;
+    letter-spacing: 4px;
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: clamp(32px, 8vw, 55px);
+    margin-bottom: 15px;
+    text-shadow: 0 0 20px #ff70e8;
+    animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 10px #ff70e8; }
+    to { text-shadow: 0 0 30px #ffb4f4, 0 0 50px #ff70e8; }
+}
+
+.subtitle {
+    color: #ddd0ff;
+    margin-bottom: 35px;
+}
+
+button {
+    padding: 17px 35px;
+    border: 2px solid white;
+    border-radius: 50px;
+    background: linear-gradient(45deg, #ff3cac, #784ba0);
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 25px #ff3cac;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 40px #ff3cac;
+}
+
+#surprise {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 0, 30, 0.88);
+    z-index: 10;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.popup {
+    background: linear-gradient(145deg, #4b126d, #17104c);
+    border: 2px solid #ffb4f4;
+    border-radius: 25px;
+    padding: 35px 22px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 0 40px #ff3cac;
+    animation: pop 0.6s ease;
+}
+
+@keyframes pop {
+    from { transform: scale(0.3) rotate(-10deg); opacity: 0; }
+    to { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+.popup h2 {
+    color: #ffd86b;
+    font-size: 30px;
+    margin-bottom: 18px;
+}
+
+.popup p {
+    line-height: 1.8;
+    color: #f4eaff;
+    margin-bottom: 20px;
+}
+
+.balloons {
+    position: fixed;
+    bottom: -100px;
+    font-size: 40px;
+    animation: fly 8s linear infinite;
+    z-index: 1;
+}
+
+@keyframes fly {
+    to { transform: translateY(-120vh) rotate(25deg); }
+}
+
+.confetti {
+    position: fixed;
+    top: -20px;
+    width: 10px;
+    height: 15px;
+    animation: fall 4s linear forwards;
+    z-index: 20;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="date">✨ 10 NOVEMBER ✨</div>
+
+    <h1>Hey ANKITA! 🎂</h1>
+
+    <p class="subtitle">
+        Someone special has a surprise waiting for you...
+    </p>
+
+    <button onclick="unlockSurprise()">
+        🔐 SURPRISE UNLOCK
+    </button>
+</div>
+
+<div id="surprise">
+    <div class="popup">
+        <h2>🎉 HAPPY BIRTHDAY ANKITA! 🎉</h2>
+
+        <p>
+            Wishing you a day full of happiness, laughter
+            and unforgettable memories! ❤️<br><br>
+
+            May all your dreams come true.
+            Keep smiling and keep shining! ✨<br><br>
+
+            You deserve all the happiness in the world! 🥳
+        </p>
+
+        <h2>🎂 Many Many Happy Returns!</h2>
+
+        <button onclick="closeSurprise()">Thank You ❤️</button>
+    </div>
+</div>
+
+<!-- Music file: birthday.mp3 -->
+<audio id="birthdayMusic" loop>
+    <source src="birthday.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+function unlockSurprise() {
+    document.getElementById("surprise").style.display = "flex";
+
+    const music = document.getElementById("birthdayMusic");
+    music.play().catch(() => {
+        alert("Please tap the page once more to play music.");
+    });
+
+    createConfetti();
+}
+
+function closeSurprise() {
+    document.getElementById("surprise").style.display = "none";
+}
+
+function createConfetti() {
+    for (let i = 0; i < 100; i++) {
+        const confetti = document.createElement("div");
+        confetti.className = "confetti";
+
+        confetti.style.left = Math.random() * 100 + "vw";
+        confetti.style.backgroundColor =
+            ["#ff3cac", "#ffd86b", "#00e5ff", "#ffffff", "#9cff57"]
+            [Math.floor(Math.random() * 5)];
+
+        confetti.style.animationDelay = Math.random() * 2 + "s";
+
+        document.body.appendChild(confetti);
+
+        setTimeout(() => confetti.remove(), 6000);
+    }
+}
+
+// Floating balloons
+setInterval(() => {
+    const balloon = document.createElement("div");
+    balloon.className = "balloons";
+    balloon.innerHTML = ["🎈", "🎉", "🎊", "🎂"][Math.floor(Math.random() * 4)];
+    balloon.style.left = Math.random() * 95 + "vw";
+    balloon.style.animationDuration = (6 + Math.random() * 5) + "s";
+
+    document.body.appendChild(balloon);
+
+    setTimeout(() => balloon.remove(), 11000);
+}, 900);
+</script>
+
+</body>
+</html>
